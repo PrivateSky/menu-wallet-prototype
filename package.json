@@ -1,0 +1,25 @@
+{
+  "name": "menu-wallet",
+  "version": "0.0.1",
+  "description": "wallet capable to load a list of predefined ssapps",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrivateSky/menu-wallet.git"
+  },
+  "keywords": [
+    "menu-wallet"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PrivateSky/menu-wallet/issues"
+  },
+  "dependencies": {
+    "updater": "git+https://github.com/PrivateSky/updater.git"
+  },
+  "scripts": {
+    "install":"",
+    "build": "node ./bin/build.js"
+  },
+  "homepage": "https://github.com/PrivateSky/menu-wallet#readme"
+}

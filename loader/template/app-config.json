@@ -1,0 +1,52 @@
+{
+  "basePagesUrl": "/pages/",
+  "profile": {
+    "username": "SSapp",
+    "email": "your-email@domain.com",
+    "avatar": "/resources/images/cardinal.png"
+  },
+  "ssapps": {
+    "secretChannels": "%2Bu%2FGPBoDzu8xIhAqtjlZxjqvc",
+    "profile": "%GHDGh2Bu%2FGPBoDzu8xIhAqtjlZxjqvcGD"
+  },
+  "menu": {
+    "defaultMenuConfig": {
+      "icon": "fa-bars",
+      "type": "route",
+      "component": "psk-page-loader",
+      "exact": true,
+      "404": "/pages/404.html"
+    },
+    "ssapps-pages":[
+      {
+        "name":"Inbox",
+        "icon":"fa-home",
+        "path":"$secretChannels/inbox"
+      },
+      {
+        "name":"Outbox",
+        "icon":"fa-home",
+        "path":"$secretChannels/outbox"
+      },
+      {
+        "name":"Profile",
+        "icon":"fa-user",
+        "path":"$profile"
+      },
+      {
+        "name":"Compose",
+        "icon":"fa-user",
+        "path":"$secretChannels/compose"
+      }
+
+    ],
+    "pages": [
+      {
+        "name": "Home",
+        "path": "/home",
+        "icon": "fa-home",
+        "pageSrc": "home.html"
+      }
+    ]
+  }
+}
