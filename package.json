@@ -18,8 +18,8 @@
     "updater": "git+https://github.com/PrivateSky/updater.git"
   },
   "scripts": {
-    "install":"",
-    "build": "node ./bin/build.js"
+    "install": "node ./bin/install.js",
+    "build":""
   },
   "homepage": "https://github.com/PrivateSky/menu-wallet#readme"
 }

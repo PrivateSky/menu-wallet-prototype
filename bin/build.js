@@ -1,40 +1,38 @@
-let updater = require("updater");
-const config = {
-    workDir: '.',
-    dependencies: [
-        {
-            "name": "menu-wallet",
-            "src": "",
-            "actions":[
-                {
-                    "type": "mkdir",
-                    "target": "temp/wallet-app"
-                },
-                {
-                    "type": "copy",
-                    "src": "./app",
-                    "target": "./temp/wallet-app",
-                    "options":{
-                        "overwrite": true
-                    }
-                },
-                {
-                    "type": "copy",
-                    "src": "./loader/template",
-                    "target": "./temp/wallet-app",
-                    "options":{
-                        "overwrite": true
-                    }
-                }
-            ]
-        }
-    ]
-};
+require("../privatesky/psknode/bundles/overwriteRequire.js");
+require("../privatesky/psknode/bundles/edfsBar.js");
 
-updater.setTag("[Build menu-wallet]");
-updater.run(config, function(err){
-    if(err){
-        throw err;
+const fs = require("fs");
+const DOSSIER_SEED_FILE_PATH = "dossier.seed";
+const WALLET_SEED_FILE_PATH = "dossier.seed";
+const EDFS = require("edfs");
+const EDFS_ENDPOINT = "http://127.0.0.1:8080";
+let edfs = EDFS.attachToEndpoint(EDFS_ENDPOINT);
+
+fs.readFile(DOSSIER_SEED_FILE_PATH,(err, content)=>{
+    if(err || content.length === 0){
+        return createWallet();
     }
-    console.log("Finished updating cardinal")
+    const bar = edfs.loadBar(content);
+    updateWallet(bar);
 });
+
+function createWallet(){
+    const bar = edfs.createBar();
+    updateWallet(bar);
+
+}
+function updateWallet(bar){
+    bar.addFolder("/", "../code",(err, archiveDigest)=>{
+        if(err){
+            throw err;
+        }
+        fs.writeFile(DOSSIER_SEED_FILE_PATH, bar.getSeed(),(err)=>{
+            if(err){
+                throw err;
+            }
+        })
+    });
+}
+
+
+
