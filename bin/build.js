@@ -2,7 +2,6 @@ const DOSSIER_SEED_FILE_PATH = "./seed";
 const BRICK_STORAGE_PORT = process.env.BRICK_STORAGE_PORT || 8080;
 const BRICK_STORAGE_ENDPOINT = `http://127.0.0.1:${BRICK_STORAGE_PORT}`;
 
-
 require("./../../privatesky/psknode/bundles/csbBoot.js");
 require("./../../privatesky/psknode/bundles/edfsBar.js");
 const fs = require("fs");
@@ -24,12 +23,18 @@ function createWallet(callback) {
 function updateWallet(bar, callback) {
 
     console.log("update wallet");
-    bar.addFolder("code", "code", (err, archiveDigest) => {
-        if (err) {
-            return callback(err);
+    bar.delete("/", function(err){
+        if(err){
+            throw err;
         }
 
-        storeSeed(DOSSIER_SEED_FILE_PATH, bar.getSeed(), callback);
+        bar.addFolder("code", "/", (err, archiveDigest) => {
+            if (err) {
+                return callback(err);
+            }
+
+            storeSeed(DOSSIER_SEED_FILE_PATH, bar.getSeed(), callback);
+        });
     });
 }
 
@@ -48,5 +53,6 @@ build(function (err, seed) {
         console.log(err);
         process.exit(1);
     }
+
     console.log("Menu-Wallet Seed:", seed);
 });
