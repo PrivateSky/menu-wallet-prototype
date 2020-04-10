@@ -1,14 +1,17 @@
+const DOSSIER_SEED_FILE_PATH = "./seed";
+const BRICK_STORAGE_PORT = process.env.BRICK_STORAGE_PORT || 8080;
+const BRICK_STORAGE_ENDPOINT = `http://127.0.0.1:${BRICK_STORAGE_PORT}`;
+
+
 require("./../../privatesky/psknode/bundles/csbBoot.js");
 require("./../../privatesky/psknode/bundles/edfsBar.js");
 const fs = require("fs");
-const DOSSIER_SEED_FILE_PATH = "./loader/web-loader/seed.js";
 const EDFS = require("edfs");
-const EDFS_ENDPOINT = "http://127.0.0.1:8080";
-let edfs = EDFS.attachToEndpoint(EDFS_ENDPOINT);
+
+const edfs = EDFS.attachToEndpoint(BRICK_STORAGE_ENDPOINT);
 
 function storeSeed(seed_path, seed, callback) {
-    let jsonSeed = `export default {seed:"${seed}"}`;
-    fs.writeFile(seed_path, jsonSeed, (err) => {
+    fs.writeFile(seed_path, seed, (err) => {
         return callback(err, seed);
     });
 }
@@ -25,24 +28,8 @@ function updateWallet(bar, callback) {
         if (err) {
             return callback(err);
         }
-        //TODO fix this by iterating through /apps
-        fs.readFile("./apps/profile-app/seed", (err, content) => {
-            if (err || content.length === 0) {
-                storeSeed(DOSSIER_SEED_FILE_PATH, bar.getSeed(), callback);
-            }
-            let dossier = edfs.loadRawDossier(bar.getSeed());
 
-            dossier.listFiles("/code/constitution", (err, files) => {
-                console.log(err, files);
-            });
-            dossier.mount("/apps", "profileApp", content, (err) => {
-                if (err) {
-                    return callback(err);
-                }
-                storeSeed(DOSSIER_SEED_FILE_PATH, bar.getSeed(), callback);
-            });
-        });
-
+        storeSeed(DOSSIER_SEED_FILE_PATH, bar.getSeed(), callback);
     });
 }
 
