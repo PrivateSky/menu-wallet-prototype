@@ -7,6 +7,14 @@
 	  "actions": [
 		{
 		  "type": "copy",
+		  "src": "../privatesky/psknode/bundles",
+		  "target": "code/constitution",
+		  "options": {
+			"overwrite" : true
+		  }
+		},
+		{
+		  "type": "copy",
 		  "src": "../privatesky/psknode/bundles/bindableModel.js",
 		  "target": "code/scripts/bundles/bindableModel.js",
 		  "options": {
