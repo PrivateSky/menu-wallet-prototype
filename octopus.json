@@ -12,7 +12,7 @@
 		},
 		{
 		  "type": "execute",
-		  "cmd": "cd ./temp/cardinal && npm install"
+		  "cmd": "cd ./temp/cardinal && npm install && npm run build"
 		},
 		{
 		  "type": "copy",
