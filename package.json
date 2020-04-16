@@ -19,7 +19,7 @@
   },
   "scripts": {
     "postinstall": "node ./node_modules/octopus/scripts/install",
-    "prebuild": "node ./node_modules/octopus/scripts/install ./bin/prebuild_octopus.json",
+    "prebuild": "node ./node_modules/octopus/scripts/install prebuild",
     "build": "node ./bin/build.js"
   },
   "homepage": "https://github.com/PrivateSky/menu-wallet#readme"
