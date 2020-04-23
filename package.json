@@ -15,7 +15,7 @@
     "url": "https://github.com/PrivateSky/menu-wallet/issues"
   },
   "dependencies": {
-    "octopus": "git+https://github.com/PrivateSky/octopus.git"
+    "octopus": "git+https://github.com/PrivateSky/octopus.git#1.0"
   },
   "scripts": {
     "postinstall": "node ./node_modules/octopus/scripts/run",
