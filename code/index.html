@@ -23,8 +23,16 @@
         theme: "default"
     }
 
-    if(window.parent){
-        window.parent.postMessage({status:"completed"},"*");
+    if (window.frameElement){
+        const iframeIdentity = window.frameElement.getAttribute('identity');
+
+        if (iframeIdentity) {
+            window.parent.document.dispatchEvent(new CustomEvent(iframeIdentity, {
+                detail: {
+                    status: 'completed'
+                }
+            }));
+        }
     }
 </script>
 </body>
