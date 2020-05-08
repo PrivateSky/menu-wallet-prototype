@@ -31,9 +31,9 @@ export default class SSAppController{
                     throw err;
                 }
                 if (manifest.mounts) {
-                    for (let i = 0; i < manifest.mounts.length; i++) {
-                        if (manifest.mounts[i].mountName === appName) {
-                            return eventCallback(undefined, manifest.mounts[i].archiveIdentifier);
+                    for (let mount in manifest.mounts) {
+                        if (mount === "/apps/"+appName) {
+                            return eventCallback(undefined, manifest.mounts[mount]);
                         }
                     }
                 }
