@@ -16,8 +16,7 @@ function storeSeed(seed_path, seed, callback) {
 }
 
 function createWallet(callback) {
-    const bar = edfs.createBar();
-    bar.load((err) => {
+    edfs.createBar((err, bar) => {
         if (err) {
             return callback(err);
         }
@@ -28,8 +27,8 @@ function createWallet(callback) {
 function updateWallet(bar, callback) {
 
     console.log("update wallet");
-    bar.delete("/", function(err){
-        if(err){
+    bar.delete("/", function (err) {
+        if (err) {
             throw err;
         }
 
