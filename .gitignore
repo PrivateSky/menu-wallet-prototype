@@ -4,3 +4,6 @@
 /node_modules
 /.idea
 seed
+/code/constitution
+/code/scripts/bundles
+/code/themes
