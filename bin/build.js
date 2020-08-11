@@ -7,9 +7,18 @@ require("./../../privatesky/psknode/bundles/csbBoot.js");
 require("./../../privatesky/psknode/bundles/edfsBar.js");
 const fs = require("fs");
 const EDFS = require("edfs");
-
-const edfs = EDFS.attachToEndpoint(BRICK_STORAGE_ENDPOINT);
-
+$$.BDNS.addConfig("default", {
+    endpoints: [
+        {
+            endpoint: BRICK_STORAGE_ENDPOINT,
+            type: 'brickStorage'
+        },
+        {
+            endpoint: BRICK_STORAGE_ENDPOINT,
+            type: 'anchorService'
+        }
+    ]
+})
 function getCardinalDossierSeed(callback){
     fs.readFile(CARDINAL_SEED_FILE_PATH, (err, content)=>{
         if (err || content.length === 0) {
@@ -36,7 +45,7 @@ function storeSeed(seed_path, seed, callback) {
 }
 
 function createDossier(callback) {
-    edfs.createBar((err, bar) => {
+    EDFS.createDSU("Bar", (err, bar) => {
         if (err) {
             return callback(err);
         }
@@ -56,57 +65,69 @@ function updateDossier(bar, callback) {
                 return callback(err);
             }
 
-            edfs.loadRawDossier(bar.getSeed(), (err, loadedDossier) => {
-                if(err){
+            bar.getKeySSI((err, keySSI) => {
+                if (err) {
                     return callback(err);
                 }
 
-                getCardinalDossierSeed((err, cardinalSeed)=>{
-                    if (err) {
+                EDFS.resolveSSI(keySSI, "RawDossier", (err, loadedDossier) => {
+                    if(err){
                         return callback(err);
                     }
-                    loadedDossier.mount("/cardinal", cardinalSeed, (err) => {
+
+                    getCardinalDossierSeed((err, cardinalSeed)=>{
                         if (err) {
                             return callback(err);
                         }
-                        try {
-                            let themeNames = fs.readdirSync(THEMES_PATH);
-                            function addTheme(theme, callback){
-                                getThemeDossierSeed(theme,(err, themeSeed) => {
-                                    if (err) {
-                                        return callback(err);
+                        loadedDossier.mount("/cardinal", cardinalSeed, (err) => {
+                            if (err) {
+                                return callback(err);
+                            }
+                            loadedDossier.getKeySSI((err, loadedDossierKeySSI) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+
+                                try {
+                                    let themeNames = fs.readdirSync(THEMES_PATH);
+                                    function addTheme(theme, callback){
+                                        getThemeDossierSeed(theme,(err, themeSeed) => {
+                                            if (err) {
+                                                return callback(err);
+                                            }
+
+                                            loadedDossier.mount(`/themes/${theme}`, themeSeed, (err) => {
+                                                if (err) {
+                                                    return callback(err);
+                                                }
+
+                                                if(themeNames.length !== 0){
+                                                    addTheme(themeNames.pop(), callback);
+                                                }else{
+                                                    return callback();
+                                                }
+                                            });
+                                        })
                                     }
 
-                                    loadedDossier.mount(`/themes/${theme}`, themeSeed, (err) => {
-                                        if (err) {
-                                            return callback(err);
-                                        }
-
-                                        if(themeNames.length !== 0){
-                                            addTheme(themeNames.pop(), callback);
-                                        }else{
-                                            return callback();
-                                        }
-                                    });
-                                })
-                            }
-
-                            if(themeNames.length > 0){
-                                addTheme(themeNames.pop(), function(err){
-                                    if (err) {
-                                        return callback(err);
+                                    if(themeNames.length > 0){
+                                        addTheme(themeNames.pop(), function(err){
+                                            if (err) {
+                                                return callback(err);
+                                            }
+                                            storeSeed(DOSSIER_SEED_FILE_PATH, loadedDossierKeySSI, callback);
+                                        })
+                                    }else{
+                                        storeSeed(DOSSIER_SEED_FILE_PATH, loadedDossierKeySSI, callback);
                                     }
-                                    storeSeed(DOSSIER_SEED_FILE_PATH, loadedDossier.getSeed(), callback);
-                                })
-                            }else{
-                                storeSeed(DOSSIER_SEED_FILE_PATH, loadedDossier.getSeed(), callback);
-                            }
-                        } catch (e) {
-                            storeSeed(DOSSIER_SEED_FILE_PATH, loadedDossier.getSeed(), callback);
-                        }
+                                } catch (e) {
+                                    storeSeed(DOSSIER_SEED_FILE_PATH, loadedDossierKeySSI, callback);
+                                }
+                            });
+                        })
                     })
                 })
-            })
+            });
         });
     });
 }
@@ -118,22 +139,21 @@ function build(callback) {
             return createDossier(callback);
         }
 
-        const SEED = require("bar").Seed;
-        let seed;
+        let keySSI;
         try {
-            seed = new SEED(content);
+            keySSI = require("key-ssi-resolver").KeySSIFactory.create(content.toString());
         } catch (err) {
             console.log("Invalid seed. Creating a new Dossier...");
             return createDossier(callback);
         }
 
-        if(seed.getEndpoint() !== BRICK_STORAGE_ENDPOINT){
+        if(keySSI.getHint() !== BRICK_STORAGE_ENDPOINT){
             console.log("Endpoint change detected. Creating a new Dossier...");
             return createDossier(callback);
         }
 
         console.log("Dossier updating...");
-        edfs.loadBar(content, (err, bar) => {
+        EDFS.resolveSSI(content.toString(),"Bar", (err, bar) => {
             if (err) {
                 return callback(err);
             }
