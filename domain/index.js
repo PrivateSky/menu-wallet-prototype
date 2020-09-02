@@ -15,7 +15,6 @@ $$.BDNS.addConfig("default", {
 $$.swarms.describe("readDir", {
     printKeySSI: function(path, mountPoint) {
         if (rawDossier) {
-            debugger;
             return rawDossier.listMountedDossiers(path, (err, result) => {
                 if (err) {
                     return this.return(err);

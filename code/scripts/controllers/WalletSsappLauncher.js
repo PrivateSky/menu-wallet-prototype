@@ -14,25 +14,25 @@ export default class WalletSsappLauncher extends ContainerController {
         this.walletTemplateService = getWalletTemplateServiceInstance();
 
         this.__setAppName();
-        this.__appNameChangeListener();
     }
 
     __setAppName = () => {
         const appName = this.element.getAttribute("data-app-name");
         if (appName && appName.trim().length) {
-            this.model.setChainValue("appName", appName);
-            console.log("[appName]", appName);
+            this.__setAppNameAttribute(appName);
+            this.__getKeySSI(appName);
         }
     }
 
-    __appNameChangeListener = () => {
-        this.model.onChange("appName", () => {
-            this.__getKeySSI();
-        });
+    __setAppNameAttribute = (appName) => {
+        const pskSsappElement = this.element.querySelector("psk-ssapp");
+        if (pskSsappElement) {
+            pskSsappElement.setAttribute("app-name", appName);
+        }
     }
 
-    __getKeySSI = () => {
-        this.walletTemplateService.printKeySSI(APPS_FOLDER, this.model.appName, (err, keySSI) => {
+    __getKeySSI = (appName) => {
+        this.walletTemplateService.printKeySSI(APPS_FOLDER, appName, (err, keySSI) => {
             if (err) {
                 return console.error(err);
             }
