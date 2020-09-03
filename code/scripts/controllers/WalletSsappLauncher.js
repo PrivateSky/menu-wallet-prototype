@@ -32,12 +32,13 @@ export default class WalletSsappLauncher extends ContainerController {
     }
 
     __getKeySSI = (appName) => {
-        this.walletTemplateService.printKeySSI(APPS_FOLDER, appName, (err, keySSI) => {
+        this.walletTemplateService.getKeySSI(APPS_FOLDER, appName, (err, keySSI) => {
             if (err) {
                 return console.error(err);
             }
 
             this.model.setChainValue("keySSI", keySSI);
+            console.log("[Open SSAPP] " + appName + " with KeySSI: " + keySSI);
         });
     }
 }

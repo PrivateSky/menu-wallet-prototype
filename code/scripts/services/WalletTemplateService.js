@@ -5,8 +5,8 @@ class WalletTemplateService {
         new HostBootScript("wallet-template-service");
     }
 
-    printKeySSI(path, appName, callback) {
-        $$.interaction.startSwarmAs("test/agent/007", "readDir", "printKeySSI", path, appName).onReturn(callback);
+    getKeySSI(path, appName, callback) {
+        $$.interaction.startSwarmAs("test/agent/007", "readDir", "getKeySSI", path, appName).onReturn(callback);
     }
 }
 

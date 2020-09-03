@@ -13,7 +13,7 @@ $$.BDNS.addConfig("default", {
 });
 
 $$.swarms.describe("readDir", {
-    printKeySSI: function(path, mountPoint) {
+    getKeySSI: function(path, mountPoint) {
         if (rawDossier) {
             return rawDossier.listMountedDossiers(path, (err, result) => {
                 if (err) {
