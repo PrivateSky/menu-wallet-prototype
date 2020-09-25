@@ -1,17 +1,5 @@
 const EDFS_ENDPOINT = "http://localhost:8080";
 
-$$.BDNS.addConfig("default", {
-    endpoints: [{
-            endpoint: EDFS_ENDPOINT,
-            type: "brickStorage"
-        },
-        {
-            endpoint: EDFS_ENDPOINT,
-            type: "anchorService"
-        }
-    ]
-});
-
 $$.swarms.describe("readDir", {
     getKeySSI: function(path, mountPoint) {
         if (rawDossier) {
