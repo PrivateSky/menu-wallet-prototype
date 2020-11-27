@@ -8,6 +8,10 @@ class WalletTemplateService {
     getKeySSI(path, appName, callback) {
         $$.interaction.startSwarmAs("test/agent/007", "readDir", "getKeySSI", path, appName).onReturn(callback);
     }
+
+    getUserDetails(callback) {
+        $$.interaction.startSwarmAs("test/agent/007", "readDir", "getUserDetails").onReturn(callback);
+    }
 }
 
 let walletTemplateService = new WalletTemplateService();

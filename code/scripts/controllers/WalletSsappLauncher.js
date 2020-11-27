@@ -8,8 +8,14 @@ export default class WalletSsappLauncher extends ContainerController {
         super(element, history);
 
         this.model = this.setModel({
+            userProfile: {
+                username: "Cosmin",
+                email: "irimia.cosmin@gmail.com",
+                avatar: "https://privatesky.xyz/assets/images/privatesky.png"
+            },
             appName: null,
-            keySSI: null
+            keySSI: null,
+            params: null
         });
         this.walletTemplateService = getWalletTemplateServiceInstance();
 
@@ -20,7 +26,7 @@ export default class WalletSsappLauncher extends ContainerController {
         const appName = this.element.getAttribute("data-app-name");
         if (appName && appName.trim().length) {
             this.__setAppNameAttribute(appName);
-            this.__getKeySSI(appName);
+            this.__getKeySSIAndParams(appName);
         }
     }
 
@@ -31,11 +37,17 @@ export default class WalletSsappLauncher extends ContainerController {
         }
     }
 
-    __getKeySSI = (appName) => {
+    __getKeySSIAndParams = (appName) => {
         this.walletTemplateService.getKeySSI(APPS_FOLDER, appName, (err, keySSI) => {
             if (err) {
                 return console.error(err);
             }
+            this.walletTemplateService.getUserDetails((err, userDetails) => {
+                if (err) {
+                    return console.error(err);
+                }
+                this.model.setChainValue("params", JSON.stringify(userDetails));
+            });
 
             this.model.setChainValue("keySSI", keySSI);
             console.log("[Open SSAPP] " + appName + " with KeySSI: " + keySSI);
