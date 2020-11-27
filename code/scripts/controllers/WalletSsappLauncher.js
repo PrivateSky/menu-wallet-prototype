@@ -8,11 +8,6 @@ export default class WalletSsappLauncher extends ContainerController {
         super(element, history);
 
         this.model = this.setModel({
-            userProfile: {
-                username: "Cosmin",
-                email: "irimia.cosmin@gmail.com",
-                avatar: "https://privatesky.xyz/assets/images/privatesky.png"
-            },
             appName: null,
             keySSI: null,
             params: null
