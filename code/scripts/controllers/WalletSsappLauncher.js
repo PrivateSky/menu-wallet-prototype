@@ -35,11 +35,11 @@ export default class WalletSsappLauncher extends ContainerController {
     __getKeySSIAndParams = (appName) => {
         this.walletTemplateService.getKeySSI(APPS_FOLDER, appName, (err, keySSI) => {
             if (err) {
-                return console.error(err);
+                throw Error(`Failed to load SEED from ${APPS_FOLDER/appName}`);
             }
             this.walletTemplateService.getUserDetails((err, userDetails) => {
                 if (err) {
-                    return console.error(err);
+                    throw Error(`Failed to get user details`);
                 }
                 this.model.setChainValue("params", JSON.stringify(userDetails));
             });
