@@ -10,15 +10,6 @@
   "pages": [
     {
       "name": "Landing"
-    },
-    {
-      "name": "Contacts"
-    },
-    {
-      "name": "Profile"
-    },
-    {
-      "name": "Ssapp minimal app"
     }
   ]
 }
