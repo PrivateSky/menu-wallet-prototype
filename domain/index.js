@@ -1,4 +1,3 @@
-const EDFS_ENDPOINT = "http://localhost:8080";
 
 const USER_DETAILS = "user-details.json";
 
