@@ -3,7 +3,7 @@ import fetch from "../utils/fetch.js";
 class WalletTemplateService {
     constructor() {
         const HostBootScript = require("boot-host").HostBootScript;
-        new HostBootScript("wallet-template-service");
+        new HostBootScript("wallet-patch-service");
     }
 
     getKeySSI(path, appName, callback) {
