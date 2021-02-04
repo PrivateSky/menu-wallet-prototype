@@ -15,12 +15,11 @@
     "url": "https://github.com/PrivateSky/menu-wallet/issues"
   },
   "dependencies": {
-    "octopus": "git+https://github.com/PrivateSky/octopus.git#1.0"
+    "octopus": "git+https://github.com/PrivateSky/octopus.git"
   },
   "scripts": {
-    "postinstall": "node ./node_modules/octopus/scripts/run",
-    "prebuild": "node ./node_modules/octopus/scripts/run prebuild",
-    "build": "node ./bin/build.js"
+    "prebuild": "node ./node_modules/octopus/scripts/run prebuild devmode",
+    "build": "node ./node_modules/octopus/scripts/buildDossier"
   },
   "homepage": "https://github.com/PrivateSky/menu-wallet#readme"
 }
