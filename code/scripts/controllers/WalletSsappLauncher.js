@@ -13,7 +13,9 @@ export default class WalletSsappLauncher extends ContainerController {
             params: null
         });
         this.walletTemplateService = getWalletTemplateServiceInstance();
-
+        document.addEventListener("menuEvent", (evt)=>{
+            this.element.querySelector('psk-ssapp').setAttribute('refresh', Date.now());
+        })
         this.__setAppName();
     }
 
@@ -45,7 +47,7 @@ export default class WalletSsappLauncher extends ContainerController {
             });
 
             this.model.setChainValue("keySSI", keySSI);
-            console.log("[Open SSAPP] " + appName + " with KeySSI: " + keySSI);
+            console.log("[Open SSAPP ------ ] " + appName + " with KeySSI: " + keySSI);
         });
     }
 }
